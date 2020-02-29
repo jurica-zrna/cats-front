@@ -38,7 +38,7 @@
         d.innerHTML='';
         for (var i = 0; i < data.length; i++) {
           var item = document.createElement('li')
-          var link = '<a href="http://{{ url }}:{{ port }}/api/CatBreed/' + JSON.stringify(data[i].id + '">' + JSON.stringify(data[i].name + '</a>'
+          var link = '<a href="http://{{ url }}:{{ port }}/api/CatBreed/' + JSON.stringify(data[i].id) + '">' + JSON.stringify(data[i].name) + '</a>'
           //item.innerText=JSON.stringify(data[i].name)
           item.innerText=link
           d.appendChild(item)
