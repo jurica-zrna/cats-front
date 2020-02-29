@@ -37,15 +37,15 @@
         var d = document.getElementById('content');
         d.innerHTML='';
         for (var i = 0; i < data.length; i++) {
-          var item = document.createElement('li')
+          var listitem = document.createElement('li')
           var a = document.createElement('a');
           var linkText = document.createTextNode(JSON.stringify(data[i].name));
           a.appendChild(linkText);
           a.title = JSON.stringify(data[i].name);
           a.href = 'http://{{ url }}:{{ port }}/api/CatBreed/' + JSON.stringify(data[i].id)
           //item.innerText=JSON.stringify(data[i].name)
-          item.innerText=link
-          d.appendChild(a)
+          listitem.append(a)
+          d.appendChild(listitem)
         }
         //d.text(JSON.stringify(data.numbers));
         //alert("Data: " + JSON.stringify(data) + "\nStatus: " + status);
