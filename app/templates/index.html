@@ -38,10 +38,14 @@
         d.innerHTML='';
         for (var i = 0; i < data.length; i++) {
           var item = document.createElement('li')
-          var link = '<a href="http://{{ url }}:{{ port }}/api/CatBreed/' + JSON.stringify(data[i].id) + '">' + JSON.stringify(data[i].name) + '</a>'
+          var a = document.createElement('a');
+          var linkText = document.createTextNode(JSON.stringify(data[i].name));
+          a.appendChild(linkText);
+          a.title = JSON.stringify(data[i].name);
+          a.href = 'http://{{ url }}:{{ port }}/api/CatBreed/' + JSON.stringify(data[i].id)
           //item.innerText=JSON.stringify(data[i].name)
           item.innerText=link
-          d.appendChild(item)
+          d.appendChild(a)
         }
         //d.text(JSON.stringify(data.numbers));
         //alert("Data: " + JSON.stringify(data) + "\nStatus: " + status);
