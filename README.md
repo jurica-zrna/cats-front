@@ -1,4 +1,4 @@
-# ocp-flask-front
+# cat-facts
 
 A simple javascript frontend for flask backend
 
