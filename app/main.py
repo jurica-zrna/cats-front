@@ -8,13 +8,13 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 host = os.getenv('HOSTNAME', 'localhost')
-backend_url = os.getenv('BACKEND_URL', 'localhost')
-backend_port = os.getenv('BACKEND_PORT', '80')
+api_url = os.getenv('API_URL', 'localhost:8080/api/CatBreed')
+static_url = os.getenv('STATIC_URL', 'localhost:9090/images')
 title = ("Cat facts")
 
 @app.route('/')
 def index():
-    response = make_response(render_template('index.html', title=title, host=host, url = backend_url, port= backend_port, num = 10))
+    response = make_response(render_template('index.html', title=title, host=host, CatBreed_api_url = api_url, static_files_url = static_url))
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
