@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 host = os.getenv('HOSTNAME', 'localhost')
 backend_url = os.getenv('BACKEND_URL', 'localhost')
 backend_port = os.getenv('BACKEND_PORT', '80')
-title = ("Flask on %s" % host)
+title = ("Cat facts")
 
 @app.route('/')
 def index():
