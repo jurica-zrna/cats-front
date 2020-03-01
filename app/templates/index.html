@@ -2,26 +2,74 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; connect-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ title }}</title>
+    <!-- Bootstrap CSS file -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js">
-    </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </head>
 
   <body>
 
-    <h1>Running on {{ host }}!</h1>
+    <h1 class="text-center my-3">Running on {{ host }}!</h1>
 
-    <ul id='content'>
-    </ul>
+    <div class="container mt-3">
+      <!--Row with two columns divided in 1:3 ratio-->
+      <div class="row">
+        <div class="col-md-6">
+          <table class="table table-striped">
+            <tr id='table-name'>
+              <th class="col-md-4">Name</th>
+              <td></td>
+            </tr>
+            <tr id='table-location'>
+              <th>Location</th>
+              <td></td>
+            </tr>
+            <tr id='table-origin'>
+              <th>Origin</th>
+              <td></td>
+            </tr>
+            <tr id='table-body'>
+              <th>Body type</th>
+              <td></td>
+            </tr>
+            <tr id='table-length'>
+              <th>Coat Length</th>
+              <td></td>
+            </tr>
+            <tr id='table-pattern'>
+              <th>Coat pattern</th>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <div class="row" id='content'>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script>
       function call_api(){
         $.ajax({
           url: "http://{{ url }}:{{ port }}/api/CatBreed",
           data: {},
-          success: success,
+          success: fill_menu,
+          error: err,
+          dataType: "json"
+        });
+      };
+      function button_click(element) {
+        $.ajax({
+          url: "http://{{ url }}:{{ port }}/api/CatBreed/" + element.target.id,
+          data: {},
+          success: fill_table,
           error: err,
           dataType: "json"
         });
@@ -33,27 +81,44 @@
         setInterval(call_api, 5000);
       });
 
-      function success(data, status){
-        var d = document.getElementById('content');
-        d.innerHTML='';
+      function fill_table(data, status) {
+        fill_row('table-name', data.name);
+        fill_row('table-location', data.geography);
+        fill_row('table-origin', data.origin);
+        fill_row('table-body', data.body);
+        fill_row('table-length', data.coat);
+        fill_row('table-pattern', data.pattern);
+      };
+
+      function fill_row(element, data) {
+        var tr = document.getElementById(element);
+        tr.removeChild(tr.lastChild);
+        var td = document.createElement('td');
+        td.innerHTML = data
+        td.classList.add("col-md-8");
+        tr.appendChild(td)
+      }
+
+      function fill_menu(data, status){
+        var div = document.getElementById('content');
+        div.innerHTML='';
         for (var i = 0; i < data.length; i++) {
-          var listitem = document.createElement('li')
-          var a = document.createElement('a');
-          var linkText = document.createTextNode(JSON.stringify(data[i].name));
-          a.appendChild(linkText);
-          a.title = JSON.stringify(data[i].name);
-          a.href = 'http://{{ url }}:{{ port }}/api/CatBreed/' + JSON.stringify(data[i].id)
-          //item.innerText=JSON.stringify(data[i].name)
-          listitem.append(a)
-          d.appendChild(listitem)
+          var button = document.createElement('input');
+          button.type = "button";
+          button.value = data[i].name;
+          button.id = JSON.stringify(data[i].id);
+          button.classList.add("col-lg-2");
+          button.classList.add("btn");
+          button.classList.add("btn-outline-info");
+          button.addEventListener('click', button_click);
+          div.appendChild(button)
         }
-        //d.text(JSON.stringify(data.numbers));
-        //alert("Data: " + JSON.stringify(data) + "\nStatus: " + status);
       };
       function err(data, status){
         console.log(data);
         console.log(status);
       };
     </script>
+
   </body>
 </html>
