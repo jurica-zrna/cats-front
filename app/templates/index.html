@@ -101,7 +101,7 @@
           var img = document.createElement('img');
           img.innerHTML = name
         if (file !== ",") {
-          img.src = "{{ static_files_url" + file
+          img.src = "{{ static_files_url }}" + file
         };
           img.classList.add("rounded");
           img.classList.add("img-fluid");
